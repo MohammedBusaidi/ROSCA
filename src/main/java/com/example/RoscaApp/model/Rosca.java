@@ -1,8 +1,9 @@
-package com.example.RoscaApp.Models;
+package com.example.RoscaApp.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -27,12 +28,21 @@ public class Rosca {
             inverseJoinColumns = @JoinColumn(name = "member_id")
     )
     private Set<User> members;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private int contributionAmount;
+
+    @Column
     private Integer codePin;
+
+    @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
     private LocalDateTime expireAt;
+
+    @Column(nullable = false)
     private boolean isActive;
-
-
 }

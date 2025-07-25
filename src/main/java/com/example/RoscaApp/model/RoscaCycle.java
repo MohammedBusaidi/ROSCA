@@ -1,11 +1,10 @@
-package com.example.RoscaApp.Models;
+package com.example.RoscaApp.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -26,7 +25,11 @@ public class RoscaCycle {
     private User collector;
 
     private int cycleNumber;
+
+    @Column(nullable = false)
     private LocalDateTime startDate;
+
     private LocalDateTime endDate;
+
     private boolean isActive;
 }

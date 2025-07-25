@@ -1,4 +1,4 @@
-package com.example.RoscaApp.Models;
+package com.example.RoscaApp.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
