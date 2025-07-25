@@ -14,7 +14,7 @@ public class RoscaService {
     private RoscaRepository roscaRepo;
 
 
-    public RoscaDTO createRosca(UUID creatorId, String title, int contributionAmount) {
-    }
+//    public RoscaDTO createRosca(UUID creatorId, String title, int contributionAmount) {
+//    }
 
 }
