@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,5 +22,5 @@ public class Contribution {
     private User contributor;
 
     @ManyToOne
-    private RoscaGroup group;
+    private Rosca group;
 }
