@@ -1,11 +1,10 @@
-package com.example.RoscaApp.Models;
+package com.example.RoscaApp.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
