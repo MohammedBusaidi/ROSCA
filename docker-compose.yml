@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    platform: linux/x86_64
+    environment:
+      MYSQL_ROOT_PASSWORD: Rosca268
+    ports:
+      - "3306:3306"
+    volumes:
+      - './mysql-initdb:/docker-entrypoint-initdb.d'
+      - 'mysqldb:/var/lib/mysql'
+
+volumes:
+  mysqldb: {}
