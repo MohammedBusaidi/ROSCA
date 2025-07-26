@@ -27,7 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    public User loadUserByEmail (String email){
+    public User loadUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow();
     }
 

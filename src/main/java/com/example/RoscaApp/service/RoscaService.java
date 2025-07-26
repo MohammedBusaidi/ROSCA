@@ -1,6 +1,8 @@
 package com.example.RoscaApp.service;
 
 import com.example.RoscaApp.dto.CreateRoscaRequest;
+import com.example.RoscaApp.dto.RoscaDTO;
+import com.example.RoscaApp.dto.RoscaResponse;
 import com.example.RoscaApp.exception.InvalidInputException;
 import com.example.RoscaApp.model.Rosca;
 import com.example.RoscaApp.model.User;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,14 +25,14 @@ public class RoscaService {
     private final RoscaRepository roscaRepository;
     private final UserRepository userRepository;
 
-
+    //create a rosca
     public UUID createRosca(UUID creatorId, CreateRoscaRequest request) {
         log.warn("Attempting to create Rosca by user: {}", creatorId);
 
         User creator = userRepository.findById(creatorId)
                 .orElseThrow(() -> {
                     log.warn("Creator with ID {} not found", creatorId);
-                   return new InvalidInputException("Creator not found");
+                    return new InvalidInputException("Creator not found");
                 });
 
         //check title input
@@ -39,9 +42,9 @@ public class RoscaService {
         }
 
         //check amount
-        if (request.contributionAmount() <=0) {
+        if (request.contributionAmount() <= 0) {
             log.warn("Invalid Contribution amount from user {}: {}", creatorId, request.contributionAmount());
-            throw new InvalidInputException(("Contribution amount must be more the 0"));
+            throw new InvalidInputException(("Contribution amount must be more than 0"));
         }
 
         Rosca rosca = Rosca.builder()
@@ -61,6 +64,7 @@ public class RoscaService {
         return savedRosca.getId();
     }
 
+    //join a rosca
     public UUID joinRosca(UUID roscaId, UUID userId, Integer pin) {
         log.info("User {} attempting to join Rosca {}", userId, roscaId);
 
@@ -99,5 +103,48 @@ public class RoscaService {
 
         log.info("User {} successfully joined Rosca {}", userId, savedRosca.getId());
         return savedRosca.getId();
+    }
+
+    //get all roscas that user have
+    public List<RoscaResponse> getUserRoscas(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    log.warn("User with ID {} not found", userId);
+                    return new InvalidInputException("User not found");
+                });
+
+        List<Rosca> roscas = roscaRepository.findAllByMembersContaining(user);
+
+        return roscas.stream()
+                .map(rosca -> new RoscaResponse(
+                        rosca.getId(),
+                        rosca.getTitle(),
+                        rosca.isActive(),
+                        rosca.getMembers().size(),
+                        rosca.getCreatedAt()
+                ))
+                .toList();
+    }
+
+    public UUID leaveRosca(UUID roscaId, UUID userId) {
+        Rosca rosca = roscaRepository.findById(roscaId)
+                .orElseThrow(() -> new InvalidInputException("Rosca not found"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new InvalidInputException("User not found"));
+
+        if (!rosca.getMembers().contains(user)) {
+            log.warn("User {} is not a member of Rosca {}", userId, roscaId);
+            throw new InvalidInputException("User is not a member of this Rosca");
+        }
+        if (rosca.isActive()) {
+            log.warn("User {} tried to leave an active Rosca {}", userId, roscaId);
+            throw new InvalidInputException("Cannot leave an active Rosca");
+        }
+        rosca.getMembers().remove(user);
+        roscaRepository.save(rosca);
+
+        log.info("User {} successfully left Rosca {}", userId, roscaId);
+        return rosca.getId();
     }
 }
