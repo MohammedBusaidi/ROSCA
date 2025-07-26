@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/rosca-cycles")
+@RequestMapping("api/v1/rosca-cycles")
 public class RoscaCycleController {
 
     private final RoscaCycleService roscaCycleService;
