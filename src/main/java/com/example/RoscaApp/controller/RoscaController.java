@@ -39,7 +39,7 @@ public class RoscaController {
     }
 
     //Delete Rosca
-    @DeleteMapping("/{roscaId}/leave")
+    @PostMapping("/{roscaId}/leave")
     public ResponseEntity<Map<String, UUID>> leaveRosca(
             @PathVariable UUID roscaId,
             @RequestParam UUID userId

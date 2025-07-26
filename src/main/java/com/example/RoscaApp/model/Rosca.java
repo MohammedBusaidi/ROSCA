@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity
 public class Rosca {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID id;
 
     @ManyToOne
@@ -45,5 +45,5 @@ public class Rosca {
     private LocalDateTime expireAt;
 
     @Column(nullable = false)
-    private boolean isActive;
+    private boolean active;
 }

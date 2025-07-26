@@ -10,10 +10,11 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class RoscaCycle {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID id;
 
     @ManyToOne
@@ -21,9 +22,10 @@ public class RoscaCycle {
     private Rosca rosca;
 
     @OneToOne
-    @JoinColumn(name = "collector_id", nullable = false)
+    @JoinColumn(name = "collector_id", nullable = false, unique = true)
     private User collector;
 
+    @Column(nullable = false)
     private int cycleNumber;
 
     @Column(nullable = false)
@@ -31,5 +33,6 @@ public class RoscaCycle {
 
     private LocalDateTime endDate;
 
+    @Column(nullable = false)
     private boolean isActive;
 }

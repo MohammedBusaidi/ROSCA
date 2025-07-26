@@ -1,7 +1,6 @@
 package com.example.RoscaApp.service;
 
 import com.example.RoscaApp.dto.CreateRoscaRequest;
-import com.example.RoscaApp.dto.RoscaDTO;
 import com.example.RoscaApp.dto.RoscaResponse;
 import com.example.RoscaApp.exception.InvalidInputException;
 import com.example.RoscaApp.model.Rosca;
@@ -47,6 +46,10 @@ public class RoscaService {
             throw new InvalidInputException(("Contribution amount must be more than 0"));
         }
 
+        if (request.codePin() != null && (request.codePin() < 1000 || request.codePin() > 9999)) {
+            throw new InvalidInputException("PIN must be a 4-digit number.");
+        }
+
         Rosca rosca = Rosca.builder()
                 .id(UUID.randomUUID())
                 .creator(creator)
@@ -54,7 +57,7 @@ public class RoscaService {
                 .contributionAmount(request.contributionAmount())
                 .codePin(request.codePin())
                 .createdAt(LocalDateTime.now())
-                .isActive(false)
+                .active(false)
                 .members(new HashSet<>(Set.of(creator)))
                 .build();
 
